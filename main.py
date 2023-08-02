@@ -208,14 +208,15 @@ class PersonalityBot:
             role=role,
         )
 
+        if 'DALL·E' in message.text:
+            self.dalle_context(message.text, message, tennant_id)
+            return
+
         if random.random() < 0.025 or (
             message.chat.type == "private" and not message.from_user.is_bot
         ):
             self.chatgpt(message.text, message, tennant_id)
         elif random.random() < 0.025:
-            self.dalle_context(message.text, message, tennant_id)
-
-        if 'DALL·E' in message.text:
             self.dalle_context(message.text, message, tennant_id)
 
 

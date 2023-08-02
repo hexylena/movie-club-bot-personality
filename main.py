@@ -238,6 +238,7 @@ if __name__ == '__main__':
             try:
                 p.command_dispatch(message)
             except Exception as e:
+                bot_flavor = flavor
                 capture_exception(e)
                 print(e)
                 bot.send_message(

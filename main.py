@@ -148,6 +148,7 @@ class PersonalityBot:
     def __init__(self, bot, flavor):
         self.name = flavor
         self.bot = bot
+        print(self.bot.get_me())
         self.DEFAULT_PROMPT = PROMPT_LIBRARY[flavor]
         self.DEFAULT_DALLE_PROMPT = DALLE_PROMPT_LIBRARY[flavor]
         self.cm = ContextManager()
@@ -170,7 +171,7 @@ class PersonalityBot:
 
         # Add the user's query
         self.cm.add_context(self.name, gpt3_text, tennant_id, role="assistant")
-        u = f"[{completion['usage']['prompt_tokens']}/{completion['usage']['completion_tokens']}]/{c1-c0}s"
+        u = f"[{completion['usage']['prompt_tokens']}/{completion['usage']['completion_tokens']}/{c1-c0:0.2f}s]"
         bot.send_message(message.chat.id, gpt3_text + f"\n\n{u}")
 
     def dalle(self, query, message, tennant_id):
@@ -216,7 +217,7 @@ class PersonalityBot:
 
         if random.random() < 0.025 or (
             message.chat.type == "private" and not message.from_user.is_bot
-        ):
+        ) or f'@h_{self.name.lower()}_bot' in message.text:
             self.chatgpt(message.text, message, tennant_id)
         elif random.random() < 0.025:
             self.dalle_context(message.text, message, tennant_id)
@@ -229,8 +230,6 @@ if __name__ == '__main__':
     telegram_key = os.getenv(f"TELEGRAM_TOKEN_{flavor.upper()}")
     if telegram_key is None:
         print(f"Please set TELEGRAM_TOKEN_{flavor.upper()}")
-    else:
-        print(f"Using key {telegram_key}")
     bot = telebot.TeleBot(telegram_key)
     p = PersonalityBot(bot, flavor)
     def handle_messages(messages):

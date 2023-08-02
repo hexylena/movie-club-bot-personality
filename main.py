@@ -235,16 +235,15 @@ if __name__ == '__main__':
             if message.text is None:
                 continue
 
-            p.command_dispatch(message)
-            # try:
-            #     p.command_dispatch(message)
-            # except Exception as e:
-            #     capture_exception(e)
-            #     print(e)
-            #     bot.send_message(
-            #         message.chat.id,
-            #         f"⚠️ reported to sentry",
-            #     )
+            try:
+                p.command_dispatch(message)
+            except Exception as e:
+                capture_exception(e)
+                print(e)
+                bot.send_message(
+                    message.chat.id,
+                    f"⚠️ reported to sentry",
+                )
 
     bot.set_update_listener(handle_messages)
     bot.infinity_polling()

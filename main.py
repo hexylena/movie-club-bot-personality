@@ -229,6 +229,8 @@ if __name__ == '__main__':
     telegram_key = os.getenv(f"TELEGRAM_TOKEN_{flavor.upper()}")
     if telegram_key is None:
         print(f"Please set TELEGRAM_TOKEN_{flavor.upper()}")
+    else:
+        print(f"Using key {telegram_key}")
     bot = telebot.TeleBot(telegram_key)
     p = PersonalityBot(bot, flavor)
     def handle_messages(messages):

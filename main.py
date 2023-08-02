@@ -160,15 +160,17 @@ class PersonalityBot:
         )
         import pprint; pprint.pprint(messages)
 
+        c0 = time.time()
         completion = openai.ChatCompletion.create(
             model=MODEL, messages=messages
         )
         msg = completion["choices"][0]["message"]
         gpt3_text = msg["content"]
+        c1 = time.time()
 
         # Add the user's query
         self.cm.add_context(self.name, gpt3_text, tennant_id, role="assistant")
-        u = f"[{completion['usage']['prompt_tokens']}/{completion['usage']['completion_tokens']}]"
+        u = f"[{completion['usage']['prompt_tokens']}/{completion['usage']['completion_tokens']}]/{c1-c0}s"
         bot.send_message(message.chat.id, gpt3_text + f"\n\n{u}")
 
     def dalle(self, query, message, tennant_id):

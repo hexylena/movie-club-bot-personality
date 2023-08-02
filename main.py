@@ -172,7 +172,7 @@ class PersonalityBot:
         # Add the user's query
         self.cm.add_context(self.name, gpt3_text, tennant_id, role="assistant")
         u = f"[{completion['usage']['prompt_tokens']}/{completion['usage']['completion_tokens']}/{c1-c0:0.2f}s]"
-        bot.send_message(message.chat.id, gpt3_text + f"\n\n{u}")
+        bot.reply_to(message, gpt3_text + f"\n\n{u}")
 
     def dalle(self, query, message, tennant_id):
         response = openai.Image.create(prompt=query, n=1, size="512x512")
@@ -244,8 +244,8 @@ if __name__ == '__main__':
                 bot_flavor = flavor
                 capture_exception(e)
                 print(e)
-                bot.send_message(
-                    message.chat.id,
+                bot.reply_to(
+                    message,
                     f"⚠️ reported to sentry",
                 )
 
